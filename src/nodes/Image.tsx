@@ -8,6 +8,7 @@ import getDataTransferFiles from "../lib/getDataTransferFiles";
 import uploadPlaceholderPlugin from "../lib/uploadPlaceholder";
 import insertFiles from "../commands/insertFiles";
 import Node from "./Node";
+import embedPlaceholder from "../lib/embedPlaceholder";
 
 /**
  * Matches following attributes in Markdown-typed image: [, alt, src, class]
@@ -433,7 +434,12 @@ export default class Image extends Node {
   }
 
   get plugins() {
-    return [uploadPlaceholderPlugin, uploadPlugin(this.options)];
+    //FIXME: I'm not sure where we should put embedPlaceholder
+    return [
+      embedPlaceholder,
+      uploadPlaceholderPlugin,
+      uploadPlugin(this.options),
+    ];
   }
 }
 

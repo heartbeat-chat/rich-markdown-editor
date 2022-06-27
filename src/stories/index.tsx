@@ -125,6 +125,14 @@ export default function Example(props) {
             setTimeout(() => resolve(URL.createObjectURL(file)), 1500);
           });
         }}
+        getEmbedLink={link => {
+          console.log("Get embed link triggered: ", link);
+
+          // Delay to simulate time taken to upload
+          return new Promise(resolve => {
+            setTimeout(() => resolve(link), 1500);
+          });
+        }}
         embeds={embeds}
         {...props}
       />

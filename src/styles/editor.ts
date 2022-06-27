@@ -32,6 +32,13 @@ export const StyledEditor = styled("div")<{
     position: relative;
   }
 
+  //TODO: style
+  .embed-placeholder {
+    position: relative;
+    background: ${props => props.theme.grey};
+    height: calc(28px + 1.2em);
+  }
+
   .image {
     text-align: center;
     max-width: 100%;

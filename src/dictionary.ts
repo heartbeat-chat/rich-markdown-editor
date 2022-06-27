@@ -37,6 +37,7 @@ export const base = {
   info: "Info",
   infoNotice: "Info notice",
   link: "Link",
+  embed: "Embed",
   linkCopied: "Link copied to clipboard",
   mark: "Highlight",
   newLineEmpty: "Type '/' to insert…",

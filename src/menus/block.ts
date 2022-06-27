@@ -123,6 +123,12 @@ export default function blockMenuItems(
       keywords: "link url uri href",
     },
     {
+      name: "iframe_embed",
+      title: dictionary.embed,
+      icon: LinkIcon,
+      keywords: "link url uri href embed",
+    },
+    {
       name: "separator",
     },
     {
