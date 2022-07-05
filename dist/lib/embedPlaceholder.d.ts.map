@@ -1,0 +1,1 @@
+{"version":3,"file":"embedPlaceholder.d.ts","sourceRoot":"","sources":["../../src/lib/embedPlaceholder.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,EAAE,MAAM,mBAAmB,CAAC;AAIxD,QAAA,MAAM,gBAAgB,kBAuCpB,CAAC;AAEH,eAAe,gBAAgB,CAAC;AAEhC,wBAAgB,eAAe,CAC7B,KAAK,EAAE,WAAW,EAClB,EAAE,EAAE,MAAM,GACT,CAAC,MAAM,EAAE,MAAM,CAAC,GAAG,IAAI,CAIzB"}

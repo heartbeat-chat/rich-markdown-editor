@@ -18,6 +18,10 @@ const embedPlaceholder = new Plugin({
         const element = document.createElement("div");
         element.className = "embed-placeholder";
 
+        const text = document.createElement("p");
+        text.innerHTML = "✨ Embed loading...";
+        element.appendChild(text);
+
         const deco = Decoration.widget(action.add.pos, element, {
           id: action.add.id,
         });
