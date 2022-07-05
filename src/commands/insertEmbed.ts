@@ -1,6 +1,5 @@
 import { EditorView } from "prosemirror-view";
 import embedPlaceholder, { findPlaceholder } from "../lib/embedPlaceholder";
-import { ToastType } from "../types";
 import baseDictionary from "../dictionary";
 import { NodeSelection } from "prosemirror-state";
 
@@ -13,10 +12,9 @@ const insertEmbed = function(
   options: {
     dictionary: typeof baseDictionary;
     getEmbedLink: (link: string) => Promise<string | null>;
-    onShowToast?: (message: string, code: string) => void;
   }
 ): void {
-  const { dictionary, onShowToast, getEmbedLink } = options;
+  const { getEmbedLink } = options;
 
   const { schema, tr } = view.state;
 
@@ -83,12 +81,6 @@ const insertEmbed = function(
         remove: { id },
       });
       view.dispatch(transaction);
-
-      // let the user know
-      //TODO: fix?
-      if (onShowToast) {
-        onShowToast(dictionary.imageUploadError, ToastType.Error);
-      }
     });
 };
 

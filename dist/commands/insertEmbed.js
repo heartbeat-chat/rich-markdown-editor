@@ -20,11 +20,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const embedPlaceholder_1 = __importStar(require("../lib/embedPlaceholder"));
-const types_1 = require("../types");
 const prosemirror_state_1 = require("prosemirror-state");
 let embedId = 0;
 const insertEmbed = function (view, pos, link, options) {
-    const { dictionary, onShowToast, getEmbedLink } = options;
+    const { getEmbedLink } = options;
     const { schema, tr } = view.state;
     const id = `embed-${embedId++}`;
     tr.setMeta(embedPlaceholder_1.default, {
@@ -59,9 +58,6 @@ const insertEmbed = function (view, pos, link, options) {
             remove: { id },
         });
         view.dispatch(transaction);
-        if (onShowToast) {
-            onShowToast(dictionary.imageUploadError, types_1.ToastType.Error);
-        }
     });
 };
 exports.default = insertEmbed;

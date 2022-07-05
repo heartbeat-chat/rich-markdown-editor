@@ -157,7 +157,6 @@ class CommandMenu extends React.Component {
                     return;
                 }
                 if (getEmbedLink !== undefined &&
-                    onShowToast !== undefined &&
                     this.state.insertItem.name === "iframe_embed") {
                     this.clearSearch();
                     const { state } = view;
@@ -165,7 +164,6 @@ class CommandMenu extends React.Component {
                     if (parent) {
                         insertEmbed_1.default(view, parent.pos, href, {
                             getEmbedLink,
-                            onShowToast,
                             dictionary,
                         });
                     }

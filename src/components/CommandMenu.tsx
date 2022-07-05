@@ -208,7 +208,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
       event.stopPropagation();
       const href = event.currentTarget.value;
 
-      const { getEmbedLink, onShowToast, view, dictionary } = this.props;
+      const { getEmbedLink, view, dictionary } = this.props;
       try {
         new URL(href);
       } catch {
@@ -217,7 +217,6 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
 
       if (
         getEmbedLink !== undefined &&
-        onShowToast !== undefined &&
         this.state.insertItem.name === "iframe_embed"
       ) {
         this.clearSearch();
@@ -228,7 +227,6 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
         if (parent) {
           insertEmbed(view, parent.pos, href, {
             getEmbedLink,
-            onShowToast,
             dictionary,
           });
         }
