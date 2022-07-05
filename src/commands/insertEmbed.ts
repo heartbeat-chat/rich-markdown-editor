@@ -46,19 +46,15 @@ const insertEmbed = function(
         return;
       }
       if (embedLink === null) {
-        //TODO: handle
+        view.dispatch(
+          view.state.tr.setMeta(embedPlaceholder, { remove: { id } })
+        );
         return;
       }
 
-      const [from, to] = result;
-      console.log(123, from, to, embedLink);
+      const [from] = result;
       view.dispatch(
         view.state.tr
-          // .replaceWith(
-          //   from,
-          //   to || from,
-          //   schema.marks.link.create({ href: embedLink })
-          // )
           .setMeta(embedPlaceholder, { remove: { id } })
           .insertText(embedLink, from)
           .addMark(

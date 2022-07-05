@@ -209,6 +209,11 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
       const href = event.currentTarget.value;
 
       const { getEmbedLink, onShowToast, view, dictionary } = this.props;
+      try {
+        new URL(href);
+      } catch {
+        return;
+      }
 
       if (
         getEmbedLink !== undefined &&
@@ -429,6 +434,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
       embeds = [],
       search = "",
       uploadImage,
+      getEmbedLink,
       commands,
       filterable = true,
     } = this.props;
@@ -466,6 +472,8 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
 
       // If no image upload callback has been passed, filter the image block out
       if (!uploadImage && item.name === "image") return false;
+
+      if (!getEmbedLink && item.name === "iframe_embed") return false;
 
       // some items (defaultHidden) are not visible until a search query exists
       if (!search) return !item.defaultHidden;
