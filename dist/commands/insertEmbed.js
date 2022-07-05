@@ -41,10 +41,10 @@ const insertEmbed = function (view, pos, link, options) {
             return;
         }
         if (embedLink === null) {
+            view.dispatch(view.state.tr.setMeta(embedPlaceholder_1.default, { remove: { id } }));
             return;
         }
-        const [from, to] = result;
-        console.log(123, from, to, embedLink);
+        const [from] = result;
         view.dispatch(view.state.tr
             .setMeta(embedPlaceholder_1.default, { remove: { id } })
             .insertText(embedLink, from)

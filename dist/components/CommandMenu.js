@@ -150,6 +150,12 @@ class CommandMenu extends React.Component {
                 event.stopPropagation();
                 const href = event.currentTarget.value;
                 const { getEmbedLink, onShowToast, view, dictionary } = this.props;
+                try {
+                    new URL(href);
+                }
+                catch (_a) {
+                    return;
+                }
                 if (getEmbedLink !== undefined &&
                     onShowToast !== undefined &&
                     this.state.insertItem.name === "iframe_embed") {
@@ -345,7 +351,7 @@ class CommandMenu extends React.Component {
         }
     }
     get filtered() {
-        const { embeds = [], search = "", uploadImage, commands, filterable = true, } = this.props;
+        const { embeds = [], search = "", uploadImage, getEmbedLink, commands, filterable = true, } = this.props;
         let items = this.props.items;
         const embedItems = [];
         for (const embed of embeds) {
@@ -369,6 +375,8 @@ class CommandMenu extends React.Component {
                 return false;
             }
             if (!uploadImage && item.name === "image")
+                return false;
+            if (!getEmbedLink && item.name === "iframe_embed")
                 return false;
             if (!search)
                 return !item.defaultHidden;
