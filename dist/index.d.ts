@@ -111,7 +111,7 @@ export declare type Props = {
     handleDOMEvents?: {
         [name: string]: (view: EditorView, event: Event) => boolean;
     };
-    getEmbedLink: (link: string) => Promise<string>;
+    getEmbedLink?: (link: string) => Promise<string>;
     uploadImage?: (file: File) => Promise<string>;
     onBlur?: () => void;
     onFocus?: () => void;
