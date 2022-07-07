@@ -10,6 +10,7 @@ import VisuallyHidden from "./VisuallyHidden";
 import getDataTransferFiles from "../lib/getDataTransferFiles";
 import filterExcessSeparators from "../lib/filterExcessSeparators";
 import insertFiles from "../commands/insertFiles";
+import insertEmbed from "../commands/insertEmbed";
 import baseDictionary from "../dictionary";
 
 const SSR = typeof window === "undefined";
@@ -28,6 +29,7 @@ export type Props<T extends MenuItem = MenuItem> = {
   dictionary: typeof baseDictionary;
   view: EditorView;
   search: string;
+  getEmbedLink?: (link: string) => Promise<string | null>;
   uploadImage?: (file: File) => Promise<string>;
   onImageUploadStart?: () => void;
   onImageUploadStop?: () => void;
@@ -177,6 +179,8 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
     switch (item.name) {
       case "image":
         return this.triggerImagePick();
+      case "iframe_embed":
+        return this.triggerLinkInput(item);
       case "embed":
         return this.triggerLinkInput(item);
       case "link": {
@@ -202,24 +206,50 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
-
       const href = event.currentTarget.value;
-      const matches = this.state.insertItem.matcher(href);
 
-      if (!matches && this.props.onShowToast) {
-        this.props.onShowToast(
-          this.props.dictionary.embedInvalidLink,
-          ToastType.Error
-        );
+      const { getEmbedLink, view, dictionary } = this.props;
+      try {
+        new URL(href);
+      } catch {
         return;
       }
 
-      this.insertBlock({
-        name: "embed",
-        attrs: {
-          href,
-        },
-      });
+      if (
+        getEmbedLink !== undefined &&
+        this.state.insertItem.name === "iframe_embed"
+      ) {
+        this.clearSearch();
+
+        const { state } = view;
+        const parent = findParentNode(node => !!node)(state.selection);
+
+        if (parent) {
+          insertEmbed(view, parent.pos, href, {
+            getEmbedLink,
+            dictionary,
+          });
+        }
+        this.props.onClose();
+        this.props.view.focus();
+      } else {
+        const matches = this.state.insertItem.matcher(href);
+
+        if (!matches && this.props.onShowToast) {
+          this.props.onShowToast(
+            this.props.dictionary.embedInvalidLink,
+            ToastType.Error
+          );
+          return;
+        }
+
+        this.insertBlock({
+          name: "embed",
+          attrs: {
+            href,
+          },
+        });
+      }
     }
 
     if (event.key === "Escape") {
@@ -231,6 +261,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
   handleLinkInputPaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
     if (!this.props.isActive) return;
     if (!this.state.insertItem) return;
+    if (this.state.insertItem.name === "iframe_embed") return;
 
     const href = event.clipboardData.getData("text/plain");
     const matches = this.state.insertItem.matcher(href);
@@ -401,6 +432,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
       embeds = [],
       search = "",
       uploadImage,
+      getEmbedLink,
       commands,
       filterable = true,
     } = this.props;
@@ -430,13 +462,16 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
       if (
         item.name &&
         !commands[item.name] &&
-        !commands[`create${capitalize(item.name)}`]
+        !commands[`create${capitalize(item.name)}`] &&
+        item.name !== "iframe_embed"
       ) {
         return false;
       }
 
       // If no image upload callback has been passed, filter the image block out
       if (!uploadImage && item.name === "image") return false;
+
+      if (!getEmbedLink && item.name === "iframe_embed") return false;
 
       // some items (defaultHidden) are not visible until a search query exists
       if (!search) return !item.defaultHidden;

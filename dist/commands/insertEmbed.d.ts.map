@@ -1,0 +1,1 @@
+{"version":3,"file":"insertEmbed.d.ts","sourceRoot":"","sources":["../../src/commands/insertEmbed.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,kBAAkB,CAAC;AAE9C,OAAO,cAAc,MAAM,eAAe,CAAC;AAK3C,QAAA,MAAM,WAAW,SACT,UAAU,OACX,MAAM,QACL,MAAM;gBAEE,qBAAqB;yBACZ,MAAM,KAAK,QAAQ,MAAM,GAAG,IAAI,CAAC;MAEvD,IAqEF,CAAC;AAEF,eAAe,WAAW,CAAC"}

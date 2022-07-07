@@ -134,6 +134,7 @@ export type Props = {
   handleDOMEvents?: {
     [name: string]: (view: EditorView, event: Event) => boolean;
   };
+  getEmbedLink?: (link: string) => Promise<string | null>;
   uploadImage?: (file: File) => Promise<string>;
   onBlur?: () => void;
   onFocus?: () => void;
@@ -795,6 +796,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   isActive={this.state.emojiMenuOpen}
                   search={this.state.blockMenuSearch}
                   onClose={() => this.setState({ emojiMenuOpen: false })}
+                  getEmbedLink={this.props.getEmbedLink}
                 />
                 <BlockMenu
                   view={this.view}
@@ -804,6 +806,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   isActive={this.state.blockMenuOpen}
                   search={this.state.blockMenuSearch}
                   onClose={this.handleCloseBlockMenu}
+                  getEmbedLink={this.props.getEmbedLink}
                   uploadImage={this.props.uploadImage}
                   onLinkToolbarOpen={this.handleOpenLinkMenu}
                   onImageUploadStart={this.props.onImageUploadStart}
