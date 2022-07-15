@@ -235,6 +235,34 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
+    if (
+      this.props.getEmbedLink !== undefined &&
+      this.props.embeds !== prevProps.embeds
+    ) {
+      const extensions = this.createExtensions();
+      const parser = extensions.parser({
+        schema: this.schema,
+        plugins: extensions.rulePlugins,
+      });
+      const doc = parser.parse(this.value());
+      const newState = EditorState.create({
+        schema: this.schema,
+        doc,
+        plugins: [
+          ...this.plugins,
+          ...this.keymaps,
+          dropCursor({ color: this.theme().cursor }),
+          gapCursor(),
+          inputRules({
+            rules: this.inputRules,
+          }),
+          keymap(baseKeymap),
+        ],
+      });
+      this.view.updateState(newState);
+      this.focusAtEnd();
+    }
+
     // Allow changes to the 'value' prop to update the editor from outside
     if (this.props.value && prevProps.value !== this.props.value) {
       const newState = this.createState(this.props.value);
