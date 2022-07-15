@@ -226,6 +226,31 @@ class RichMarkdownEditor extends React.PureComponent {
         }
     }
     componentDidUpdate(prevProps) {
+        if (this.props.getEmbedLink !== undefined &&
+            this.props.embeds !== prevProps.embeds) {
+            const extensions = this.createExtensions();
+            const parser = extensions.parser({
+                schema: this.schema,
+                plugins: extensions.rulePlugins,
+            });
+            const doc = parser.parse(this.value());
+            const newState = prosemirror_state_1.EditorState.create({
+                schema: this.schema,
+                doc,
+                plugins: [
+                    ...this.plugins,
+                    ...this.keymaps,
+                    prosemirror_dropcursor_1.dropCursor({ color: this.theme().cursor }),
+                    prosemirror_gapcursor_1.gapCursor(),
+                    prosemirror_inputrules_1.inputRules({
+                        rules: this.inputRules,
+                    }),
+                    prosemirror_keymap_1.keymap(prosemirror_commands_1.baseKeymap),
+                ],
+            });
+            this.view.updateState(newState);
+            this.focusAtEnd();
+        }
         if (this.props.value && prevProps.value !== this.props.value) {
             const newState = this.createState(this.props.value);
             this.view.updateState(newState);

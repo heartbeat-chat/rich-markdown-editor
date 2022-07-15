@@ -149,7 +149,7 @@ class CommandMenu extends React.Component {
                 event.preventDefault();
                 event.stopPropagation();
                 const href = event.currentTarget.value;
-                const { getEmbedLink, onShowToast, view, dictionary } = this.props;
+                const { getEmbedLink, view, dictionary } = this.props;
                 try {
                     new URL(href);
                 }
