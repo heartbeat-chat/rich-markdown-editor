@@ -12,6 +12,7 @@ import filterExcessSeparators from "../lib/filterExcessSeparators";
 import insertFiles from "../commands/insertFiles";
 import insertEmbed from "../commands/insertEmbed";
 import baseDictionary from "../dictionary";
+import isUrl from "../lib/isUrl";
 
 const SSR = typeof window === "undefined";
 
@@ -209,9 +210,13 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
       const href = event.currentTarget.value;
 
       const { getEmbedLink, view, dictionary } = this.props;
-      try {
-        new URL(href);
-      } catch {
+      if (!isUrl(href)) {
+        if (this.props.onShowToast !== undefined) {
+          const msg = href.includes("<iframe")
+            ? "Invalid URL. Paste the shareable link to the content you want to embed, not the embed code directly"
+            : "Invalid URL";
+          this.props.onShowToast(msg, ToastType.Error);
+        }
         return;
       }
 
