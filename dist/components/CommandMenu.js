@@ -46,6 +46,7 @@ const getDataTransferFiles_1 = __importDefault(require("../lib/getDataTransferFi
 const filterExcessSeparators_1 = __importDefault(require("../lib/filterExcessSeparators"));
 const insertFiles_1 = __importDefault(require("../commands/insertFiles"));
 const insertEmbed_1 = __importDefault(require("../commands/insertEmbed"));
+const isUrl_1 = __importDefault(require("../lib/isUrl"));
 const SSR = typeof window === "undefined";
 const defaultPosition = {
     left: -1000,
@@ -150,10 +151,13 @@ class CommandMenu extends React.Component {
                 event.stopPropagation();
                 const href = event.currentTarget.value;
                 const { getEmbedLink, view, dictionary } = this.props;
-                try {
-                    new URL(href);
-                }
-                catch (_a) {
+                if (!isUrl_1.default(href)) {
+                    if (this.props.onShowToast !== undefined) {
+                        const msg = href.includes("<iframe")
+                            ? "Invalid URL. Paste the shareable link to the content you want to embed, not the embed code directly"
+                            : "Invalid URL";
+                        this.props.onShowToast(msg, types_1.ToastType.Error);
+                    }
                     return;
                 }
                 if (getEmbedLink !== undefined &&
