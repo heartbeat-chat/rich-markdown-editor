@@ -242,7 +242,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
         this.insertBlock({
           name: "embed",
           attrs: {
-            href,
+            href: value,
           },
         });
       }
