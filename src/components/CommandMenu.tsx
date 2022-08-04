@@ -207,18 +207,9 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
     if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
-      const href = event.currentTarget.value;
+      const value = event.currentTarget.value;
 
       const { getEmbedLink, view, dictionary } = this.props;
-      if (!isUrl(href)) {
-        if (this.props.onShowToast !== undefined) {
-          const msg = href.includes("<iframe")
-            ? "Invalid URL. Paste the shareable link to the content you want to embed, not the embed code directly"
-            : "Invalid URL";
-          this.props.onShowToast(msg, ToastType.Error);
-        }
-        return;
-      }
 
       if (
         getEmbedLink !== undefined &&
@@ -230,7 +221,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
         const parent = findParentNode(node => !!node)(state.selection);
 
         if (parent) {
-          insertEmbed(view, parent.pos, href, {
+          insertEmbed(view, parent.pos, value, {
             getEmbedLink,
             dictionary,
           });
@@ -238,7 +229,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
         this.props.onClose();
         this.props.view.focus();
       } else {
-        const matches = this.state.insertItem.matcher(href);
+        const matches = this.state.insertItem.matcher(value);
 
         if (!matches && this.props.onShowToast) {
           this.props.onShowToast(
@@ -251,7 +242,7 @@ class CommandMenu<T = MenuItem> extends React.Component<Props<T>, State> {
         this.insertBlock({
           name: "embed",
           attrs: {
-            href,
+            href: value,
           },
         });
       }

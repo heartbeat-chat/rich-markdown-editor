@@ -46,7 +46,6 @@ const getDataTransferFiles_1 = __importDefault(require("../lib/getDataTransferFi
 const filterExcessSeparators_1 = __importDefault(require("../lib/filterExcessSeparators"));
 const insertFiles_1 = __importDefault(require("../commands/insertFiles"));
 const insertEmbed_1 = __importDefault(require("../commands/insertEmbed"));
-const isUrl_1 = __importDefault(require("../lib/isUrl"));
 const SSR = typeof window === "undefined";
 const defaultPosition = {
     left: -1000,
@@ -149,24 +148,15 @@ class CommandMenu extends React.Component {
             if (event.key === "Enter") {
                 event.preventDefault();
                 event.stopPropagation();
-                const href = event.currentTarget.value;
+                const value = event.currentTarget.value;
                 const { getEmbedLink, view, dictionary } = this.props;
-                if (!isUrl_1.default(href)) {
-                    if (this.props.onShowToast !== undefined) {
-                        const msg = href.includes("<iframe")
-                            ? "Invalid URL. Paste the shareable link to the content you want to embed, not the embed code directly"
-                            : "Invalid URL";
-                        this.props.onShowToast(msg, types_1.ToastType.Error);
-                    }
-                    return;
-                }
                 if (getEmbedLink !== undefined &&
                     this.state.insertItem.name === "iframe_embed") {
                     this.clearSearch();
                     const { state } = view;
                     const parent = prosemirror_utils_1.findParentNode(node => !!node)(state.selection);
                     if (parent) {
-                        insertEmbed_1.default(view, parent.pos, href, {
+                        insertEmbed_1.default(view, parent.pos, value, {
                             getEmbedLink,
                             dictionary,
                         });
@@ -175,7 +165,7 @@ class CommandMenu extends React.Component {
                     this.props.view.focus();
                 }
                 else {
-                    const matches = this.state.insertItem.matcher(href);
+                    const matches = this.state.insertItem.matcher(value);
                     if (!matches && this.props.onShowToast) {
                         this.props.onShowToast(this.props.dictionary.embedInvalidLink, types_1.ToastType.Error);
                         return;
@@ -183,7 +173,7 @@ class CommandMenu extends React.Component {
                     this.insertBlock({
                         name: "embed",
                         attrs: {
-                            href,
+                            href: value,
                         },
                     });
                 }
