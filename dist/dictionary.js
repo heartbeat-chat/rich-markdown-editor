@@ -50,7 +50,9 @@ exports.base = {
     orderedList: "Ordered list",
     pageBreak: "Page break",
     pasteLink: "Paste a link…",
-    pasteLinkWithTitle: (title) => `Paste a ${title} link…`,
+    pasteLinkWithTitle: (title) => title === "Embed"
+        ? "Paste a link or HTML code directly"
+        : `Paste a ${title} link…`,
     placeholder: "Placeholder",
     quote: "Quote",
     removeLink: "Remove link",
