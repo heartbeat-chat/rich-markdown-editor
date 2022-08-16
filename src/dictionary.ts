@@ -47,7 +47,10 @@ export const base = {
   orderedList: "Ordered list",
   pageBreak: "Page break",
   pasteLink: "Paste a link…",
-  pasteLinkWithTitle: (title: string): string => `Paste a ${title} link…`,
+  pasteLinkWithTitle: (title: string): string =>
+    title === "Embed"
+      ? "Paste a link or HTML code directly"
+      : `Paste a ${title} link…`,
   placeholder: "Placeholder",
   quote: "Quote",
   removeLink: "Remove link",
